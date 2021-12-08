@@ -31,7 +31,7 @@ opts_chunk$set(
 
 # Introduction
 
-As of November 30th, the coronavirus disease 2019 (COVID-19) pandemic had resulted in 49,716,825 cases and 806,398 deaths in the United States. As of November 24, 2021, around 28 percent of total COVID-19 deaths in the United States have been among adults 85 years and older, despite this age group only accounting for 2 percent of the U.S. population.The widespread availability of vaccines in the United States helped to reduce cases in the spring and early summer. In this analysis, we obtain the COVID-19 Deaths and Fully Vaccinated Status Data, collected from January 1st, 2020 to December 1st, 2021. The main question that this analysis explores is the association between the number of deaths due to COVID-19 and the number of people who have been fully vaccinated in different age groups.
+As of November 30th, the coronavirus disease 2019 (COVID-19) pandemic had resulted in 49,716,825 cases and 806,398 deaths in the United States. As of November 24, 2021, around 28 percent of total COVID-19 deaths in the United States have been among adults 85 years and older, despite this age group only accounting for 2 percent of the U.S. population.The widespread availability of vaccines in the United States helped to reduce cases in the spring and early summer. In this analysis, we obtain the COVID-19 Deaths and Fully Vaccinated Status Data, collected from January 1st, 2020 to December 7th, 2021. The main question that this analysis explores is the association between the number of deaths due to COVID-19 and the number of people who have been fully vaccinated in different age groups.
 
 # Methods
 
