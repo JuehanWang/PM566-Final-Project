@@ -41,7 +41,7 @@ To analyze the data, we use R packages, dplyr, data.table, tidyr, tidyverse and 
 
 In order to get the final analysis data, first, read in the data. Second, clean the raw datasets. For COVID-19 deaths data, the variables we are interested in counts of COVID-19 deaths by state and age group. Therefore, we clustered age groups into three groups, 0-18, 18-65 and 65+. Then the proportions of COVID-19 deaths among all deaths were calculated. Abbreviated state names were combined to the data. For COVID-19 fully vaccinated data, the variables of interest are the counts of fully vaccinated people by age group and state. Full state names were combined to the data. For state population data, the variables that we are concerned about are the population of different states and age groups. Therefore, we clustered age into three groups, 0-18, 18-65 and 65+. Third, merge the datasets and do some cleaning. Then we check the dimensions of the datasets. The COVID-19 deaths data and the fully vaccinated data have same number of columns. The population data have one more state data than the other two datasets. So, it should be mentioned here that the extra data will be deleted during data merging step. After checking the heads and tails and making sure that the datasets have good dimensions, we merge the datasets and do some cleaning, and then we get the final data for analysis.
 
-As for statistical methods, descriptive analysis is done by summarizing statistics of the variables that this study concern about. Plots are shown by bar charts and maps, in order to have a straight forward view of the concerned variables. The main question of this study is explored using correlation analysis and smooth graph, based on proportion data.
+As for statistical methods, descriptive analysis was done by summarizing statistics of the variables that this study concern about. Plots were shown by bar charts and maps, in order to have a straight forward view of the concerned variables. The main question of this study was explored using correlation analysis and smooth graph, based on proportion data.
 
 ### Final Dataset
 
@@ -87,8 +87,6 @@ if (!file.exists(fn3))
 pop<-read.csv(fn3)
 pop<-as_tibble(pop)
 ```
-
-
 
 ```{r cleaning-age, include=FALSE}
 # cov_age cleaning
@@ -193,8 +191,6 @@ pop <- pop[,-2]
 pop <- pop %>% distinct(Population, .keep_all= TRUE)
 ```
 
-
-
 ```{r data-info, include=FALSE}
 dim(cov_age)
 dim(cov_vacc)
@@ -239,11 +235,13 @@ cov_age_vacc$Age.group <- fifelse(cov_age_vacc$Age.group=="age_0_18","Age 0-18",
                                          "All")))
 ```
 
-# Preliminary Results
+# Results
 
 Summarizes of statistics are shown in tables. We can get that the three states that have the highest deaths are California, Texas and Florida, which have 221,775, 218,261 and 169,626, respectively. Also, the three states that have the highest proportion of deaths in total deaths are New Jersey, Mississippi and Connecticut, which are 16.4%, 14.7% and 14%, respectively. As for the condition of fully vaccinated, the three states that have the highest number are California, Texas and New York, which are 23,996,305, 15,347,006 and 12,850,740, respectively. Additionally, the three states that have the highest proportion of fully vaccinated in the population are Vermont, Maine and Connecticut, which are 35.4%, 35.2% and 35.1%, respectively. The age group description table shows that people older than 65 years old have both the highest number of average deaths in all states and the highest proportion of deaths in total deaths, which are 31,530 and 0.115. More number of people age between 18 and 65 have fully vaccinated compared to the other two groups, which is 2,554,933. But larger proportion of older people have fully vaccinated compared to younger people.
 
-## Descriptive Analysis
+## Preliminary Results
+
+### Descriptive Analysis
 
 ```{r table1, echo=FALSE}
 cov_age_vacc <- as.data.table(cov_age_vacc)
@@ -267,7 +265,7 @@ table_age <- cov_age_vacc[, .(
 datatable(table_age)
 ```
 
-## Visualization
+### Visualization
 
 Bar charts and maps are shown to have a better view of the condition of COVID-19 Deaths and status of fully vaccinated in different states among age groups. From the bar chart of death due to Covid-19 we can straightly get that the largest numbers of deaths due to Covid-19 were in Texas and California. It is also obvious that the numbers of deaths in people older than 65 were much larger than those in other age groups. When looking at the bar chart of death proportions due to Covid-19 among all deaths, we get that the largest proportion was in Texas. From the bar chart of numbers of people who were fully vaccinated we can straightly get that the largest number of people who have got fully vaccinated was in California. It is also obvious that the numbers in people who were between 18 to 65 years old were much larger than those in other age groups. When looking at the bar chart of fully vaccinated proportions among the population, we get that the largest proportions were in Vermont, Rhode Island and Connecticut. Also, the proportions of fully vaccinated in people who were older than 65 years old were larger than those in other age groups. In the maps of deaths, states that are darker in the maps have more deaths or larger proportion of deaths. In the maps of status of fully vaccinated, states that are darker in the maps have larger number or proportion of people who were fully vaccinated.
 
@@ -332,7 +330,6 @@ cor <- cor(cov_age_vacc[cov_age_vacc$Age.group=="All",]$Deaths.prop, cov_age_vac
 knitr::kable(cor, col.names = "correlation")
 ```
 
-
 ```{r association2, warning=FALSE, message=FALSE, echo=FALSE}
 smooth2 <- ggplot(data = cov_age_vacc[cov_age_vacc$Age.group=="All",]) + 
   geom_smooth(mapping = aes(x = Vacc.prop, y = Deaths.prop, linetype = Age.group, fill = Age.group)) + 
@@ -346,6 +343,7 @@ smooth <- ggplot(data = cov_age_vacc[cov_age_vacc$Age.group!="All",]) +
     labs(title = "Fully Vaccinated Proportion vs. Deaths Proportion", x  = "Fully Vaccinated Proportion", y = "Deaths Proportion")
 ggplotly(smooth)
 ```
+
 # Conclusion
 
 There is no association between COVID-19 Deaths and fully vaccinated status in different age groups based on the current data. It is also found that people over the age of 65 have the highest deaths, which means that younger people are more likely to survive from COVID-19. Meanwhile, people older than 65 years old have the largest proportion of having been fully vaccinated among the whole population. In future analysis, longer term association between deaths due to COVID-19 and the status of fully vaccinated among different age groups should be looked at.
