@@ -252,16 +252,26 @@ table_state <- cov_age_vacc[cov_age_vacc$Age.group=="All", .(
   "COVID-19 Fully Vaccinated proportion" = round(Vacc.prop,3)
 ),
 by = State]
-datatable(table_state)
-```
 
-```{r table2, echo=FALSE}
 table_age <- cov_age_vacc[, .(
   "Average of deaths" = round(mean(Deaths),0),
   "Average of proportation of deaths" = round(mean(Deaths.prop),3),
   "Average of fully vaccinated" = round(mean(Vacc),0),
   "Average of proportation of fully vaccinated" = round(mean(Vacc.prop),3)
 ), by = Age.group]
+```
+
+### {.tabset}
+
+#### By States
+
+```{r, echo=FALSE}
+datatable(table_state)
+```
+
+#### By Age Groups
+
+```{r, echo=FALSE}
 datatable(table_age)
 ```
 
@@ -273,13 +283,23 @@ Bar charts and maps are shown to have a better view of the condition of COVID-19
 barchart1 <- ggplot(cov_age_vacc[Age.group!="All"],aes(x=State, y=Deaths, fill=Age.group)) + 
   geom_bar(stat = 'identity') + 
   labs(title = "COVID-19 Deaths by States and Age Group", x  = "State", y = "Deaths")
-ggplotly(barchart1)
-```
 
-```{r deaths-plots2, echo=FALSE}
 barchart2 <- ggplot(cov_age_vacc[Age.group!="All"],aes(x=State, y=Deaths.prop, fill=Age.group)) + 
   geom_bar(stat = 'identity') + 
   labs(title = "COVID-19 Deaths Proportions by States and Age Group", x  = "State", y = "Deaths")
+```
+
+## {.tabset}
+
+### COVID-19 Deaths
+
+```{r, echo=FALSE}
+ggplotly(barchart1)
+```
+
+### COVID-19 Deaths Proportions
+
+```{r, echo=FALSE}
 ggplotly(barchart2)
 ```
 
@@ -287,11 +307,23 @@ ggplotly(barchart2)
 map1 <- plot_usmap(regions = 'states', data = cov_age_vacc[cov_age_vacc$Age.group=="All",], values ='Deaths', labels = TRUE, label_color = "black") +
   scale_fill_continuous(low = "orange", high = "orange4", guide = "none") + 
   labs(title = "COVID-19 Deaths")
-ggplotly(map1)
 
 map2 <- plot_usmap(regions = 'states', data = cov_age_vacc[cov_age_vacc$Age.group=="All",], values ='Deaths.prop', labels = TRUE, label_color = "black") +
   scale_fill_continuous(low = "orange", high = "orange4", guide = "none") + 
   labs(title = "Proportion of COVID-19 Deaths")
+```
+
+## {.tabset}
+
+### COVID-19 Deaths
+
+```{r, echo=FALSE}
+ggplotly(map1)
+```
+
+### COVID-19 Deaths Proportions
+
+```{r, echo=FALSE}
 ggplotly(map2)
 ```
 
@@ -299,13 +331,23 @@ ggplotly(map2)
 barchart3 <- ggplot(cov_age_vacc[Age.group!="All"],aes(x=State, y=Vacc, fill=Age.group)) + 
   geom_bar(stat = 'identity') + 
     labs(title = "Fully Vaccinated by States and Age Group", x  = "State", y = "Fully Vaccinated")
-ggplotly(barchart3)
-```
 
-```{r vacc-plots2, echo=FALSE}
 barchart4 <- ggplot(cov_age_vacc[Age.group!="All"],aes(x=State, y=Vacc.prop, fill=Age.group)) + 
   geom_bar(stat = 'identity') + 
   labs(title = "Fully Vaccinated Proportions by States and Age Group", x  = "State", y = "Fully Vaccinated")
+```
+
+## {.tabset}
+
+### Fully Vaccinated
+
+```{r, echo=FALSE}
+ggplotly(barchart3)
+```
+
+### Fully Vaccinated Proportions
+
+```{r, echo=FALSE}
 ggplotly(barchart4)
 ```
 
@@ -313,11 +355,23 @@ ggplotly(barchart4)
 map3 <- plot_usmap(regions = 'states', data = cov_age_vacc[cov_age_vacc$Age.group=="All",], values ='Vacc', labels = TRUE, label_color = "black") +
   scale_fill_continuous(low = "lightblue", high = "darkblue", guide = "none") + 
   labs(title = "Fully Vaccinated People")
-ggplotly(map3)
 
 map4 <- plot_usmap(regions = 'states', data = cov_age_vacc[cov_age_vacc$Age.group=="All",], values ='Vacc.prop', labels = TRUE, label_color = "black") +
   scale_fill_continuous(low = "lightblue", high = "darkblue", guide = "none") + 
   labs(title = "Proportion of Fully Vaccinated People")
+```
+
+## {.tabset}
+
+### Fully Vaccinated
+
+```{r, echo=FALSE}
+ggplotly(map3)
+```
+
+### Fully Vaccinated Proportions
+
+```{r, echo=FALSE}
 ggplotly(map4)
 ```
 
@@ -327,21 +381,35 @@ The association between COVID-19 Deaths and fully vaccinated status is explored 
 
 ```{r correlation, echo=FALSE}
 cor <- cor(cov_age_vacc[cov_age_vacc$Age.group=="All",]$Deaths.prop, cov_age_vacc[cov_age_vacc$Age.group=="All",]$Vacc.prop)
-knitr::kable(cor, col.names = "correlation")
+#knitr::kable(cor, col.names = "correlation")
 ```
 
 ```{r association2, warning=FALSE, message=FALSE, echo=FALSE}
 smooth2 <- ggplot(data = cov_age_vacc[cov_age_vacc$Age.group=="All",]) + 
   geom_smooth(mapping = aes(x = Vacc.prop, y = Deaths.prop, linetype = Age.group, fill = Age.group)) + 
     labs(title = "Fully Vaccinated Proportion vs. Deaths Proportion", x  = "Fully Vaccinated Proportion", y = "Deaths Proportion")
-ggplotly(smooth2)
+#ggplotly(smooth2)
 ```
 
 ```{r association, warning=FALSE, message=FALSE, echo=FALSE}
 smooth <- ggplot(data = cov_age_vacc[cov_age_vacc$Age.group!="All",]) + 
   geom_smooth(mapping = aes(x = Vacc.prop, y = Deaths.prop, linetype = Age.group, fill = Age.group)) + 
     labs(title = "Fully Vaccinated Proportion vs. Deaths Proportion", x  = "Fully Vaccinated Proportion", y = "Deaths Proportion")
+#ggplotly(smooth)
+```
+
+## {.tabset}
+
+### Age Group
+
+```{r, echo=FALSE}
 ggplotly(smooth)
+```
+
+### All
+
+```{r, echo=FALSE}
+ggplotly(smooth2)
 ```
 
 # Conclusion
