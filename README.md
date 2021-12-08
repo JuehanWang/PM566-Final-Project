@@ -8,4 +8,4 @@ This is an analysis exploring the association between the number of deaths due t
 
 This is my PM566 Final Project website home. The website is online at https://juehanwang.github.io/PM566-Final-Project/.
 
-The Report can be downloaded at ???.
+The Report can be downloaded at https://github.com/JuehanWang/PM566-Final-Project/raw/main/Report/Report.pdf.
