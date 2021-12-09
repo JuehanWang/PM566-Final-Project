@@ -7,6 +7,8 @@ output:
         toc_float: TRUE
 ---
 
+The Report can be downloaded at https://github.com/JuehanWang/PM566-Final-Project/raw/main/Report/Report.pdf.
+
 ```{r setup, message=FALSE, echo=FALSE, warning=FALSE}
 library(data.table)
 library(tidyverse)
