@@ -1,11 +1,9 @@
 ---
-title: "Report"
+title: "Association between COVID-19 Deaths and Fully Vaccinated Status"
 author: "Juehan Wang"
 date: "12/7/2021"
 output:
-  pdf_document:
-    pandoc_args:
-     '--lua-filter=page-break.lua'
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-As of November 30th, the coronavirus disease 2019 (COVID-19) pandemic had resulted in 49,716,825 cases and 806,398 deaths in the United States. As of November 24, 2021, around 28 percent of total COVID-19 deaths in the United States have been among adults 85 years and older, despite this age group only accounting for 2 percent of the U.S. population.The widespread availability of vaccines in the United States helped to reduce cases in the spring and early summer. In this analysis, we obtain the COVID-19 Deaths and Fully Vaccinated Status Data, collected from January 1st, 2020 to December 7th, 2021. The main question that this analysis explores is the association between the number of deaths due to COVID-19 and the number of people who have been fully vaccinated in different age groups.
+As of November 30th, the coronavirus disease 2019 (COVID-19) pandemic had resulted in 49,716,825 cases and 806,398 deaths in the United States. As of November 24, 2021, around 28 percent of total COVID-19 deaths in the United States have been among adults 85 years and older, despite this age group only accounting for 2 percent of the US population. The widespread availability of vaccines in the United States helped to reduce cases in the spring and early summer. In this analysis, we obtain the COVID-19 Deaths and Fully Vaccinated Status Data, collected from January 1st, 2020 to December 7th, 2021. The main question that this analysis explores is the association between the number of deaths due to COVID-19 and the number of people who have been fully vaccinated in different age groups.
 
 # Methods
 
@@ -205,6 +203,8 @@ cov_age_vacc$Age.group <- fifelse(cov_age_vacc$Age.group=="age_0_18","Age 0-18",
                                          "All")))
 ```
 
+**Table 1 Summarizes of Statistics by States (Appendix)**
+
 ```{r table1, echo=FALSE}
 cov_age_vacc <- as.data.table(cov_age_vacc)
 table_state <- cov_age_vacc[cov_age_vacc$Age.group=="All", .(
@@ -217,6 +217,10 @@ by = State]
 knitr::kable(table_state[1:10,])
 ```
 
+Summarizes of statistics are shown in tables. Table 1 illustrates the variables that this analysis concerns about in each state in the US, which are COVID-19 Deaths, COVID-19 Deaths proportion, COVID-19 Fully Vaccinated number and COVID-19 Fully Vaccinated proportion. Here only shows the numbers of first ten states. The whole table is in the Appendix (Table 1). From this table, we can get that the three states that have the highest deaths are California, Texas and Florida, which have 221,775, 218,261 and 169,626, respectively. Also, the three states that have the highest proportion of deaths in total deaths are New Jersey, Mississippi and Connecticut, which are 16.4%, 14.7% and 14%, respectively. As for the condition of fully vaccinated, the three states that have the highest number are California, Texas and New York, which are 23,996,305, 15,347,006 and 12,850,740, respectively. Additionally, the three states that have the highest proportion of fully vaccinated in the population are Vermont, Maine and Connecticut, which are 35.4%, 35.2% and 35.1%, respectively.
+
+**Table 2 Summarizes of Statistics by Age Groups**
+
 ```{r table2, echo=FALSE}
 table_age <- cov_age_vacc[, .(
   "Average of deaths" = round(mean(Deaths),0),
@@ -227,21 +231,33 @@ table_age <- cov_age_vacc[, .(
 knitr::kable(table_age)
 ```
 
-Summarizes of statistics are shown in tables. We can get that the three states that have the highest deaths are California, Texas and Florida, which have 221,775, 218,261 and 169,626, respectively. Also, the three states that have the highest proportion of deaths in total deaths are New Jersey, Mississippi and Connecticut, which are 16.4%, 14.7% and 14%, respectively. As for the condition of fully vaccinated, the three states that have the highest number are California, Texas and New York, which are 23,996,305, 15,347,006 and 12,850,740, respectively. Additionally, the three states that have the highest proportion of fully vaccinated in the population are Vermont, Maine and Connecticut, which are 35.4%, 35.2% and 35.1%, respectively. The age group description table shows that people older than 65 years old have both the highest number of average deaths in all states and the highest proportion of deaths in total deaths, which are 31,530 and 0.115. More number of people age between 18 and 65 have fully vaccinated compared to the other two groups, which is 2,554,933. But larger proportion of older people have fully vaccinated compared to younger people.
+The age group description table (Table 2) shows that people older than 65 years old have both the highest number of average deaths in all states and the highest proportion of deaths in total deaths, which are 31,530 and 0.115. More number of people age between 18 and 65 have fully vaccinated compared to the other two groups, which is 2,554,933. But larger proportion of older people have fully vaccinated compared to younger people.
 
-```{r figure1, message=FALSE, echo=FALSE, warning=FALSE, out.width="90%"}
+Bar charts and maps are shown to have a better view of the condition of COVID-19 Deaths and status of fully vaccinated in different states among age groups.
+
+```{r figure1, message=FALSE, echo=FALSE, warning=FALSE, out.width="85%", fig.align='center'}
 ggplot(cov_age_vacc[Age.group!="All"],aes(x=State, y=Deaths, fill=Age.group)) + 
   geom_bar(stat = 'identity') + 
   labs(title = "COVID-19 Deaths by States and Age Group", x  = "State", y = "Deaths")
 ```
 
-```{r figure2, message=FALSE, echo=FALSE, warning=FALSE, out.width="90%"}
+\begin{center}
+Plot 1 COVID-19 Deaths by States and Age Group
+\end{center}
+
+```{r figure2, message=FALSE, echo=FALSE, warning=FALSE, out.width="85%", fig.align='center'}
 ggplot(cov_age_vacc[Age.group!="All"],aes(x=State, y=Deaths.prop, fill=Age.group)) + 
   geom_bar(stat = 'identity') + 
   labs(title = "COVID-19 Deaths Proportions by States and Age Group", x  = "State", y = "Deaths")
 ```
 
-```{r, message=FALSE, echo=FALSE, warning=FALSE, height="70%"}
+\begin{center}
+Plot 2 COVID-19 Deaths Proportions by States and Age Group
+\end{center}
+
+From the bar chart of deaths due to Covid-19 (Plot 1), we can straightly get that the largest numbers of deaths due to Covid-19 were in Texas and California. It is also obvious that the numbers of deaths in people older than 65 were much larger than those in other age groups. When looking at the bar chart of death proportions due to Covid-19 among all deaths (Plot 2), we get that the largest proportion was in Texas, while that of other states were quite even.
+
+```{r, message=FALSE, echo=FALSE, warning=FALSE, fig.align='center'}
 map1 <- plot_usmap(regions = 'states', data = cov_age_vacc[cov_age_vacc$Age.group=="All",], values ='Deaths', labels = TRUE, label_color = "black") +
   scale_fill_continuous(low = "orange", high = "orange4", guide = "none") + 
   labs(title = "COVID-19 Deaths")
@@ -255,24 +271,35 @@ ggarrange(map1, map2,
                     ncol = 2, nrow = 2)
 ```
 
-Bar charts and maps are shown to have a better view of the condition of COVID-19 Deaths and status of fully vaccinated in different states among age groups.
+\begin{center}
+Plot 3 Maps of COVID-19 Deaths and Proportions in the US
+\end{center}
 
-From the bar chart of death due to Covid-19 we can straightly get that the largest numbers of deaths due to Covid-19 were in Texas and California. It is also obvious that the numbers of deaths in people older than 65 were much larger than those in other age groups. When looking at the bar chart of death proportions due to Covid-19 among all deaths, we get that the largest proportion was in Texas.
+Maps of deaths due to Covid-19 (Plot 3A) and death proportions due to Covid-19 (Plot 3B) show a more straight forward view of the condition of deaths in the US. Darker states had more deaths or larger death proportions.
 
-
-```{r, message=FALSE, echo=FALSE, warning=FALSE, out.width="90%"}
+```{r, message=FALSE, echo=FALSE, warning=FALSE, out.width="85%", fig.align='center'}
 ggplot(cov_age_vacc[Age.group!="All"],aes(x=State, y=Vacc, fill=Age.group)) + 
   geom_bar(stat = 'identity') + 
     labs(title = "Fully Vaccinated by States and Age Group", x  = "State", y = "Fully Vaccinated")
 ```
 
-```{r, message=FALSE, echo=FALSE, warning=FALSE, out.width="90%"}
+\begin{center}
+Plot 4 Fully Vaccinated by States and Age Group
+\end{center}
+
+```{r, message=FALSE, echo=FALSE, warning=FALSE, out.width="85%", fig.align='center'}
 ggplot(cov_age_vacc[Age.group!="All"],aes(x=State, y=Vacc.prop, fill=Age.group)) + 
   geom_bar(stat = 'identity') + 
   labs(title = "Fully Vaccinated Proportions by States and Age Group", x  = "State", y = "Fully Vaccinated")
 ```
 
-```{r, message=FALSE, echo=FALSE, warning=FALSE, height="70%"}
+\begin{center}
+Plot 5 Fully Vaccinated Proportions by States and Age Group
+\end{center}
+
+From the bar chart of numbers of people who were fully vaccinated (Plot 4) we can straightly get that the largest number of people who have got fully vaccinated was in California. It is also obvious that the numbers in people who were between 18 to 65 years old were much larger than those in other age groups. When looking at the bar chart of fully vaccinated proportions among the population (Plot 5), we get that the largest proportions were in Vermont, Rhode Island and Connecticut. The reason that California had the most deaths but didn't have the highest proportion of deaths was probably because California had larger population compared to most of other states. Also, the proportions of fully vaccinated in people who were older than 65 years old were larger than those in other age groups.
+
+```{r, message=FALSE, echo=FALSE, warning=FALSE, fig.align='center'}
 map3 <- plot_usmap(regions = 'states', data = cov_age_vacc[cov_age_vacc$Age.group=="All",], values ='Vacc', labels = TRUE, label_color = "black") +
   scale_fill_continuous(low = "lightblue", high = "darkblue", guide = "none") + 
   labs(title = "Fully Vaccinated People")
@@ -286,23 +313,35 @@ ggarrange(map3, map4,
                     ncol = 2, nrow = 2)
 ```
 
-From the bar chart of numbers of people who were fully vaccinated we can straightly get that the largest number of people who have got fully vaccinated was in California. It is also obvious that the numbers in people who were between 18 to 65 years old were much larger than those in other age groups. When looking at the bar chart of fully vaccinated proportions among the population, we get that the largest proportions were in Vermont, Rhode Island and Connecticut. Also, the proportions of fully vaccinated in people who were older than 65 years old were larger than those in other age groups. In the maps of deaths, states that are darker in the maps have more deaths or larger proportion of deaths. In the maps of status of fully vaccinated, states that are darker in the maps have larger number or proportion of people who were fully vaccinated.
+\begin{center}
+Plot 6 Maps of Fully Vaccinated and Proportions in the US
+\end{center}
+
+In the maps of deaths (Plot 6A), states that are darker in the maps have more deaths or larger proportion of deaths. In the maps of status of fully vaccinated (Plot 6B), states that are darker in the maps have larger number or proportion of people who were fully vaccinated.
 
 ## Final Results
 
 The association between COVID-19 Deaths and fully vaccinated status is explored by correlation analysis of the proportion of COVID-19 deaths in all deaths and the proportion of fully vaccinated people in the population. The correlation between these two variables is 0.02, which is close to 0. Therefore, these two variables are not related. 
 
-```{r, message=FALSE, echo=FALSE, warning=FALSE, out.width="90%"}
+```{r, message=FALSE, echo=FALSE, warning=FALSE, out.width="85%", fig.align='center'}
 ggplot(data = cov_age_vacc[cov_age_vacc$Age.group=="All",]) + 
   geom_smooth(mapping = aes(x = Vacc.prop, y = Deaths.prop, linetype = Age.group, fill = Age.group)) + 
     labs(title = "Fully Vaccinated Proportion vs. Deaths Proportion", x  = "Fully Vaccinated Proportion", y = "Deaths Proportion")
 ```
 
-```{r, message=FALSE, echo=FALSE, warning=FALSE, out.width="90%"}
+\begin{center}
+Plot 7 Fully Vaccinated Proportion vs. Deaths Proportion
+\end{center}
+
+```{r, message=FALSE, echo=FALSE, warning=FALSE, out.width="85%", fig.align='center'}
 ggplot(data = cov_age_vacc[cov_age_vacc$Age.group!="All",]) + 
   geom_smooth(mapping = aes(x = Vacc.prop, y = Deaths.prop, linetype = Age.group, fill = Age.group)) + 
-    labs(title = "Fully Vaccinated Proportion vs. Deaths Proportion", x  = "Fully Vaccinated Proportion", y = "Deaths Proportion")
+    labs(title = "Fully Vaccinated Proportion vs. Deaths Proportion by Age Groups", x  = "Fully Vaccinated Proportion", y = "Deaths Proportion")
 ```
+
+\begin{center}
+Plot 8 Fully Vaccinated Proportion vs. Deaths Proportion by Age Groups
+\end{center}
 
 The association between COVID-19 Deaths and fully vaccinated status in different age groups is also showed in the smooth graphs. The plot shows that there is no definite or fixed trend in the relationship between the two variables. There seems to have an increasing trend when the fully vaccinated proportion is small, but a turning point appears when the proportion increases. Still, the confidence intervals are quite wide as shown in the plot, so the trends are not reliable.
 
@@ -310,15 +349,34 @@ The association between COVID-19 Deaths and fully vaccinated status in different
 
 There is no association between COVID-19 Deaths and fully vaccinated status in different age groups based on the current data. It is also found that people over the age of 65 have the highest deaths, which means that younger people are more likely to survive from COVID-19. Meanwhile, people older than 65 years old have the largest proportion of having been fully vaccinated among the whole population. In future analysis, longer term association between deaths due to COVID-19 and the status of fully vaccinated among different age groups should be looked at.
 
-
-\newpage
-
+\pagebreak
 
 # References
 
+USC Biostatistics PM566 Lectures&Labs https://github.com/USCbiostats/PM566
+
+COVID-19, Wikipedia https://en.wikipedia.org/wiki/COVID-19
+
+COVID-19 Vaccines, CDC https://www.cdc.gov/coronavirus/2019-ncov/vaccines/keythingstoknow.html?s_cid=10493:covid%2019%20vaccine:sem.ga:p:RG:GM:gen:PTN:FY21
+
+Statista https://www.statista.com/statistics/1254488/us-share-of-total-covid-deaths-by-age-group/
+
+Graphics Reuters https://graphics.reuters.com/HEALTH-CORONAVIRUS/USA-TRENDS/dgkvlgkrkpb/
 
 \newpage
 
+# Appendix
 
-# Apendix
+**Table 1 Summarizes of Statistics by States**
 
+```{r full-table1, echo=FALSE}
+cov_age_vacc <- as.data.table(cov_age_vacc)
+table_state <- cov_age_vacc[cov_age_vacc$Age.group=="All", .(
+  "COVID-19 Deaths" = Deaths,
+  "COVID-19 Deaths proportion" = round(Deaths.prop,3),
+  "COVID-19 Fully Vaccinated" = Vacc,
+  "COVID-19 Fully Vaccinated proportion" = round(Vacc.prop,3)
+),
+by = State]
+knitr::kable(table_state)
+```
